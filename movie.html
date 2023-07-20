@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
+    <!-- styling -->
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        font-family: "Open Sans", sans-serif;
+        background: #222;
+        background-image: url("pexels-bess-hamiti-36487.jpg"),
+          linear-gradient(to left, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+        background-size: cover;
+        font-size: 120%;
+        transition: all 1.2s;
+      }
+
+      /* .main {
+        background-color: rgba(39, 68, 92, 0.3);
+      } */
+
+      .head-1 {
+        font-size: 4rem;
+        color: #fff;
+      }
+
+      .search-bar {
+        width: 80%;
+        padding: 1.6rem 2rem;
+        background-color: rgba(45, 61, 74, 0.3);
+        border: none;
+        border-radius: 2rem;
+        font-size: 2rem;
+        color: #fff;
+      }
+
+      .icon {
+        width: 3.4rem;
+        height: 3.4rem;
+        color: #fff;
+      }
+
+      .search-btn {
+        background-color: rgba(25, 43, 58, 0.3);
+        border: none;
+        border-radius: 2rem;
+        padding: 0.8rem;
+        cursor: pointer;
+      }
+
+      .box-movie {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .flex-box {
+        display: none !important;
+      }
+
+      .flex-box-original {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 1200px;
+        color: #fff;
+      }
+
+      .boxes {
+        background-color: rgba(25, 43, 58, 0.3);
+        padding: 2rem 4rem;
+        border-radius: 2rem;
+        width: 200px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .flexing {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      h2,
+      p {
+        text-align: center;
+      }
+
+      p {
+        font-size: 1.6rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main main--active">
+      <h1 class="head-1">Movies with similar names!!!</h1>
+      <form class="box-movie">
+        <input
+          type="text"
+          class="search-bar"
+          placeholder="Enter movie name.."
+          id="search" />
+
+        <button class="search-btn">
+          <ion-icon class="icon" name="search-outline"></ion-icon>
+        </button>
+      </form>
+    </div>
+
+    <div class="flex-box flex-box-original flex-boxes--active">
+      <section class="boxes">
+        <div>
+          <h2>Movie Name</h2>
+          <p class="para-name">Titanic</p>
+        </div>
+        <div class="flexing">
+          <h2>Year:</h2>
+          <p class="para-year">1990</p>
+        </div>
+        <div class="flexing">
+          <h2>Score:</h2>
+          <p class="para-score">90</p>
+        </div>
+      </section>
+
+      <section class="boxes">
+        <div>
+          <h2>Movie Name</h2>
+          <p class="para-name">Titanic</p>
+        </div>
+        <div class="flexing">
+          <h2>Year:</h2>
+          <p class="para-year">1990</p>
+        </div>
+        <div class="flexing">
+          <h2>Score:</h2>
+          <p class="para-score">90</p>
+        </div>
+      </section>
+
+      <section class="boxes">
+        <div>
+          <h2>Movie Name</h2>
+          <p class="para-name">Titanic</p>
+        </div>
+        <div class="flexing">
+          <h2>Year:</h2>
+          <p class="para-year">1990</p>
+        </div>
+        <div class="flexing">
+          <h2>Score:</h2>
+          <p class="para-score">90</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- javascript code -->
+    <script>
+      const btnClick = document.querySelector(".search-btn");
+      const flexOriginal = document.querySelector(".flex-box-original");
+      const inputForm = document.querySelector(".search-bar");
+      const movieName = document.querySelectorAll(".para-name");
+      const movieYear = document.querySelectorAll(".para-year");
+      const movieScore = document.querySelectorAll(".para-score");
+
+      const hell = async (movie) => {
+        const url = `https://mdblist.p.rapidapi.com/?s=${movie}`;
+        const options = {
+          method: "GET",
+          headers: {
+            "X-RapidAPI-Key":
+              "2c8be93a48msh8a3e054ad37fb73p1d4f4bjsn7b1edb7b2798",
+            "X-RapidAPI-Host": "mdblist.p.rapidapi.com",
+          },
+        };
+
+        try {
+          const response = await fetch(url, options);
+          const result = await response.json();
+          //   console.log(result);
+
+          for (let i = 0; i < 3; i++) {
+            // movieName[i].textContent=
+            console.log(result.search[i]);
+            movieName[i].textContent = result.search[i].title;
+            movieYear[i].textContent = result.search[i].year;
+            movieScore[i].textContent = result.search[i].score;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      btnClick.addEventListener("click", (el) => {
+        el.preventDefault();
+        flexOriginal.classList.remove("flex-box");
+        hell(inputForm.value);
+      });
+    </script>
+  </body>
+</html>
